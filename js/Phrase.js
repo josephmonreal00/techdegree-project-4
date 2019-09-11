@@ -12,16 +12,11 @@ class Phrase {
     }
 
     addPhraseToDisplay() {
-
         let phraseLength = this.phrase.length;
         let spaceCount = 0;
         let elesForDiv = [];
-        //let spaceIndexes = [];
-        //let upTo = [];
-        //let startFrom = [];
         for (let i = 0; i < this.phrase.length; i++) {
             if (this.phrase[i] != " ") {
-                // create a list element
                 let ele = document.createElement('li');
                 ele.className = `hide letter ${this.phrase[i]}`;
                 ele.textContent = `${this.phrase[i]}`;
@@ -31,11 +26,6 @@ class Phrase {
             }
 
             if (this.phrase[i] == " ") {
-                // create a list element
-                //spaceCount += 1;
-                //spaceIndexes.push(i);
-                //upTo.push(i - 1);
-                //startFrom.push(i + 1);
                 let ele = document.createElement('li');
                 ele.className = 'hide space';
                 ele.textContent = `${this.phrase[i]}`;
@@ -43,47 +33,31 @@ class Phrase {
                 elesForDiv.push(ele);
             }
         }
-        //console.log(elesForDiv);
-        elesForDiv.forEach(function (ele) {
-            console.log(ele);
-        })
-        /*
-        console.log(letters);
-        console.log(this.phrase.length)
-        console.log(upTo);
-        console.log(startFrom);
-        console.log(spaceIndexes);
-        console.log(spaceCount);
-        console.log(phraseLength);
-        */
+    }
+
+    // checks to see if the letter selected matches a letter in the phrase.
+    checkLetter(key, letter, pObj) {
+        for (let i = 0; i < this.phrase.length; i++) {
+            if (this.phrase[i] == letter) {
+                this.showMatchedLetter(key, letter);
+            }
+            // else it should call the removeLife() method in the game class (MAYBE)?
+        }
+    }
+
+    // reveals the letter(s) on the board that matches the player's selection. To reveal
+    // the matching letter(s), select all of the letter DOM elements that have a CSS class name
+    // that matches the selected letter and replace each selected element's `hide` CSS class
+    // with the `show` CSS class.
+    showMatchedLetter(key, letter) {
+        const phraseEle = document.getElementsByClassName("hide letter");
+        //console.log(letter);
+        for (let i = 0; i < phraseEle.length; i++) {
+            if (phraseEle[i].textContent == letter) {
+                phraseEle[i].className = `show letter ${phraseEle[i]}`;
+                key.style.backgroundColor = 'yellow';
+                key.disabled = true;
+            }
+        }
     }
 }
-
-/*
-<div id="phrase" class="section">
-    <ul>
-        <li class="hide letter h">h</li>
-        <li class="hide letter o">o</li>
-        <li class="hide letter w">w</li>
-        <li class="space"> </li>
-        <li class="hide letter a">a</li>
-        <li class="hide letter r">r</li>
-        <li class="hide letter e">e</li>
-        <li class="space"> </li>
-        <li class="hide letter y">y</li>
-        <li class="hide letter o">o</li>
-        <li class="hide letter u">u</li>
-    </ul>
-</div>
-*/
-
-// methods
-/*
-
-     checkLetter() {
-
-     }
-     showMatchedLetter() {
-
-     }
-    */

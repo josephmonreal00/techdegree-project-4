@@ -46,25 +46,8 @@ const game = document.getElementById('btn__reset');
 game.addEventListener('click', () => {
     const game_ = new Game();
     game_.startGame();
-    const keys = document.getElementsByClassName('key');
-    console.log(keys);
-    keys.forEach((ele) => {
-        ele.addEventListener('click', () => {
-            console.log("clicked");
-        })
-    })
 })
 
-// add an event listener for clicking events when user is clicking on the buttons
-// on the screen
-/*
-const keys = document.getElementsByClassName('key');
-keys.forEach((ele) => {
-ele.addEventListener('click', () => {
- console.log("clicked");
-})
-});
-*/
 
 
-// add an event listener to listen to keyboard button events
+//console.log(keys[0].textContent);
