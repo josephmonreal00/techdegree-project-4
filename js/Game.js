@@ -33,7 +33,7 @@ class Game {
         hideEle.style.visibility = "hidden";
 
         let aPhrase = this.getRandomPhrase();
-        //console.log(aPhrase.phrase);
+        console.log(aPhrase);
         this.activePhrase = aPhrase;
 
         const phraseObj = new Phrase(aPhrase.phrase);
@@ -51,19 +51,30 @@ class Game {
         }
     }
 
-
-
     handleInteraction(keyClicked, keyValue, phraseObj) {
-        //const uniqueVals = this.activePhrase.split("").filter(uniqueVal);
-        const letter = this.activePhrase.phrase.split("");
-        phraseObj.checkLetter(keyClicked, keyValue, phraseObj);
+        //console.log(`inside handle interaction what is ${keyValue} -- ${keyClicked} -- phraseobj ${phraseObj.phrase}`);
+        const phraseToArr = phraseObj.phrase.split("");
+        //console.log(phraseToArr);
+        if (phraseToArr.indexOf(keyValue) >= 0) {
+            phraseObj.checkLetter(keyClicked, keyValue, phraseObj);
+            this.checkForWin();
+        }
+
+        if (phraseToArr.indexOf(keyValue) == -1) {
+            this.removeLife();
+        }
     }
 
     // this method checks to see if the player has revealed all of the letter
     // in the active phrase.
-    // check and see if the class is equal to `show letter ...`
+    // this.activephrase
     checkForWin() {
-
+        let lettersOnScreen = document.getElementsByClassName('show');
+        if (this.activePhrase.phrase.length - 1 == document.getElementsByClassName('show').length) {
+            this.gameOver();
+        }
+        //console.log(this.activePhrase.phrase.length - 1);
+        //console.log(document.getElementsByClassName('show').length);
     }
 
 
@@ -71,25 +82,25 @@ class Game {
     // image (found in the `images` folder) and increments the `missed property. If the player has five misssed guesses (i.e they're out of lives)
     // end the game by calling gameOver() method
     removeLife() {
-        console.log("remove life");
-    }
+        this.missed += 1;
+        const hearts = document.getElementsByClassName('tries');
+        hearts[hearts.length - this.missed].firstChild.src = `images/lostHeart.png`;
 
-
-
-
-    // methods
-    /*
-
-    removeLife() {
-
-    }
-
-    checkForWin() {
-
+        if (this.missed == 5) {
+            this.gameOver();
+        }
     }
 
     gameOver() {
-
+        console.log("gameover");
+        if (this.missed == 5) {
+            document.getElementById('game-over-message').innerHTML = "You have lost the game.";
+            document.getElementById('overlay').className = "lose";
+            document.getElementById('overlay').style.visibility = "";
+        } else {
+            document.getElementById('game-over-message').innerHTML = "You have won the game.";
+            document.getElementById('overlay').className = "win";
+            document.getElementById('overlay').style.visibility = "";
+        }
     }
-    */
 }

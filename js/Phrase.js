@@ -1,3 +1,4 @@
+// phrase.js
 /* Treehouse FSJS Techdegree
  * Project 4 - OOP Game App
  * Phrase.js */
@@ -15,12 +16,13 @@ class Phrase {
         let phraseLength = this.phrase.length;
         let spaceCount = 0;
         let elesForDiv = [];
+        let ul_ = document.getElementById('phrase').firstElementChild;
         for (let i = 0; i < this.phrase.length; i++) {
             if (this.phrase[i] != " ") {
                 let ele = document.createElement('li');
                 ele.className = `hide letter ${this.phrase[i]}`;
                 ele.textContent = `${this.phrase[i]}`;
-                document.getElementById('phrase').appendChild(ele);
+                ul_.appendChild(ele);
                 elesForDiv.push(ele);
 
             }
@@ -29,7 +31,7 @@ class Phrase {
                 let ele = document.createElement('li');
                 ele.className = 'hide space';
                 ele.textContent = `${this.phrase[i]}`;
-                document.getElementById('phrase').appendChild(ele);
+                ul_.appendChild(ele);
                 elesForDiv.push(ele);
             }
         }
@@ -49,12 +51,12 @@ class Phrase {
     // the matching letter(s), select all of the letter DOM elements that have a CSS class name
     // that matches the selected letter and replace each selected element's `hide` CSS class
     // with the `show` CSS class.
-    showMatchedLetter(key, letter) {
+    showMatchedLetter(key, letter_) {
         const phraseEle = document.getElementsByClassName("hide letter");
         //console.log(letter);
         for (let i = 0; i < phraseEle.length; i++) {
-            if (phraseEle[i].textContent == letter) {
-                phraseEle[i].className = `show letter ${phraseEle[i]}`;
+            if (phraseEle[i].textContent == letter_) {
+                phraseEle[i].className = `show letter ${phraseEle[i].textContent}`;
                 key.style.backgroundColor = 'yellow';
                 key.disabled = true;
             }
