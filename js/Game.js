@@ -29,21 +29,18 @@ class Game {
     }
 
     startGame() {
-        const hideEle = document.getElementById('overlay');
+        let hideEle = document.getElementById('overlay');
         hideEle.style.visibility = "hidden";
 
         let aPhrase = this.getRandomPhrase();
         console.log(aPhrase);
         this.activePhrase = aPhrase;
 
-        const phraseObj = new Phrase(aPhrase.phrase);
+        let phraseObj = new Phrase(aPhrase.phrase);
         phraseObj.addPhraseToDisplay();
 
-        // add an event listener too all of the keys.
-        // this will catch the user interaction each time a button
-        // is clicked. within this add event listener call the
-        // handleInteraction method withint the game class.
-        const keys = document.getElementsByClassName('key');
+        let keys = document.getElementsByClassName('key');
+
         for (let i = 0; i < keys.length; i++) {
             keys[i].addEventListener('click', () => {
                 this.handleInteraction(keys[i], keys[i].textContent, phraseObj);
@@ -52,15 +49,16 @@ class Game {
     }
 
     handleInteraction(keyClicked, keyValue, phraseObj) {
-        //console.log(`inside handle interaction what is ${keyValue} -- ${keyClicked} -- phraseobj ${phraseObj.phrase}`);
         const phraseToArr = phraseObj.phrase.split("");
-        //console.log(phraseToArr);
+        console.log(phraseToArr.indexOf(keyValue));
         if (phraseToArr.indexOf(keyValue) >= 0) {
             phraseObj.checkLetter(keyClicked, keyValue, phraseObj);
             this.checkForWin();
         }
 
         if (phraseToArr.indexOf(keyValue) == -1) {
+            keyClicked.className = `key wrong`;
+            keyClicked.disabled = true;
             this.removeLife();
         }
     }
@@ -70,7 +68,9 @@ class Game {
     // this.activephrase
     checkForWin() {
         let lettersOnScreen = document.getElementsByClassName('show');
-        if (this.activePhrase.phrase.length - 1 == document.getElementsByClassName('show').length) {
+        console.log('----', this.activePhrase.phrase.length - 1);
+        console.log('------', document.getElementsByClassName('show').length);
+        if (this.activePhrase.phrase.length - 1 === document.getElementsByClassName('show').length) {
             this.gameOver();
         }
         //console.log(this.activePhrase.phrase.length - 1);
@@ -82,25 +82,68 @@ class Game {
     // image (found in the `images` folder) and increments the `missed property. If the player has five misssed guesses (i.e they're out of lives)
     // end the game by calling gameOver() method
     removeLife() {
-        this.missed += 1;
-        const hearts = document.getElementsByClassName('tries');
-        hearts[hearts.length - this.missed].firstChild.src = `images/lostHeart.png`;
+        console.log(`missed`, this.missed);
+
+
+        let hearts = document.getElementsByClassName('tries');
+        //console.log(`hearts length`, hearts.length);
+        //console.log(`inside removelife`, hearts[hearts.length - this.missed].firstChild);
+        //hearts[hearts.length - this.missed].firstChild.src = `images/lostHeart.png`;
 
         if (this.missed == 5) {
             this.gameOver();
         }
     }
 
+
     gameOver() {
-        console.log("gameover");
+        console.log(document.getElementById('phrase').firstElementChild); //.childNodes[0]);
+        console.log(document.getElementById('phrase').firstElementChild.childNodes.length);
+
+
         if (this.missed == 5) {
-            document.getElementById('game-over-message').innerHTML = "You have lost the game.";
+            document.getElementById('game-over-message').innerHTML = `You have lost the game.`;
             document.getElementById('overlay').className = "lose";
             document.getElementById('overlay').style.visibility = "";
+
+
+            let hearts = document.getElementsByClassName('tries');
+            console.log('inside gameover loss', hearts);
+
+            for (let i = 0; i < hearts.length; i++) {
+                hearts[i].firstChild.src = `images/liveHeart.png`;
+            }
+
+            let keys = document.getElementsByClassName('key');
+            for (let i = 0; i < keys.length; i++) {
+                keys[i].className = `key`;
+                keys[i].disabled = false;
+            }
+
+            document.getElementById('phrase').firstElementChild.remove();
+            document.getElementById('phrase').appendChild(document.createElement('UL'));
+
         } else {
             document.getElementById('game-over-message').innerHTML = "You have won the game.";
             document.getElementById('overlay').className = "win";
             document.getElementById('overlay').style.visibility = "";
+
+            let hearts = document.getElementsByClassName('tries');
+            console.log('inside gameover win', hearts);
+
+            for (let i = 0; i < hearts.length; i++) {
+                hearts[i].firstChild.src = `images/liveHeart.png`;
+            }
+
+            let keys = document.getElementsByClassName('key');
+
+            for (let i = 0; i < keys.length; i++) {
+                keys[i].className = `key`;
+                keys[i].disabled = false;
+            }
+
+            document.getElementById('phrase').firstElementChild.remove();
+            document.getElementById('phrase').appendChild(document.createElement('UL'));
         }
     }
 }

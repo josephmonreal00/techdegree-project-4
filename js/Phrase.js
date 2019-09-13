@@ -14,7 +14,6 @@ class Phrase {
 
     addPhraseToDisplay() {
         let phraseLength = this.phrase.length;
-        let spaceCount = 0;
         let elesForDiv = [];
         let ul_ = document.getElementById('phrase').firstElementChild;
         for (let i = 0; i < this.phrase.length; i++) {
@@ -57,7 +56,8 @@ class Phrase {
         for (let i = 0; i < phraseEle.length; i++) {
             if (phraseEle[i].textContent == letter_) {
                 phraseEle[i].className = `show letter ${phraseEle[i].textContent}`;
-                key.style.backgroundColor = 'yellow';
+                //key.style.backgroundColor = 'yellow';
+                key.className = `key chosen`;
                 key.disabled = true;
             }
         }
