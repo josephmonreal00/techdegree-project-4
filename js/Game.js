@@ -33,8 +33,8 @@ class Game {
         hideEle.style.visibility = "hidden";
 
         let aPhrase = this.getRandomPhrase();
-        console.log(aPhrase);
         this.activePhrase = aPhrase;
+        console.log(aPhrase.phrase);
 
         let phraseObj = new Phrase(aPhrase.phrase);
         phraseObj.addPhraseToDisplay();
@@ -49,8 +49,21 @@ class Game {
     }
 
     handleInteraction(keyClicked, keyValue, phraseObj) {
-        const phraseToArr = phraseObj.phrase.split("");
-        console.log(phraseToArr.indexOf(keyValue));
+        let phraseToArr = phraseObj.phrase.split("");
+        console.log(`includes() letter ${keyValue} ${phraseToArr.includes(keyValue)}`)
+        //console.log("includes() letter", phraseToArr.includes(keyValue));
+
+        if (phraseToArr.includes(keyValue) == false) {
+            keyClicked.className = `key wrong`;
+            keyClicked.disabled = true;
+            this.missed += 1;
+            this.removeLife();
+        } else {
+            phraseObj.checkLetter(keyClicked, keyValue, phraseObj);
+            this.checkForWin();
+        }
+
+        /*
         if (phraseToArr.indexOf(keyValue) >= 0) {
             phraseObj.checkLetter(keyClicked, keyValue, phraseObj);
             this.checkForWin();
@@ -61,89 +74,56 @@ class Game {
             keyClicked.disabled = true;
             this.removeLife();
         }
+        */
     }
 
-    // this method checks to see if the player has revealed all of the letter
-    // in the active phrase.
-    // this.activephrase
     checkForWin() {
         let lettersOnScreen = document.getElementsByClassName('show');
-        console.log('----', this.activePhrase.phrase.length - 1);
-        console.log('------', document.getElementsByClassName('show').length);
+        console.log(lettersOnScreen);
         if (this.activePhrase.phrase.length - 1 === document.getElementsByClassName('show').length) {
+            console.log(this.missed);
             this.gameOver();
         }
-        //console.log(this.activePhrase.phrase.length - 1);
-        //console.log(document.getElementsByClassName('show').length);
     }
 
-
-    // this method removes a life form the scoreboard, by replacing one of the `liveHeart.png` images with a `lostHeart.png`
-    // image (found in the `images` folder) and increments the `missed property. If the player has five misssed guesses (i.e they're out of lives)
-    // end the game by calling gameOver() method
     removeLife() {
-        console.log(`missed`, this.missed);
-
-
-        let hearts = document.getElementsByClassName('tries');
-        //console.log(`hearts length`, hearts.length);
-        //console.log(`inside removelife`, hearts[hearts.length - this.missed].firstChild);
-        //hearts[hearts.length - this.missed].firstChild.src = `images/lostHeart.png`;
-
-        if (this.missed == 5) {
+        if (this.missed > 4) {
             this.gameOver();
         }
+        let hearts = document.getElementsByTagName('img');
+        hearts[hearts.length - this.missed].src = `images/lostHeart.png`;
+
     }
 
 
     gameOver() {
-        console.log(document.getElementById('phrase').firstElementChild); //.childNodes[0]);
-        console.log(document.getElementById('phrase').firstElementChild.childNodes.length);
-
-
         if (this.missed == 5) {
             document.getElementById('game-over-message').innerHTML = `You have lost the game.`;
             document.getElementById('overlay').className = "lose";
             document.getElementById('overlay').style.visibility = "";
+        }
 
-
-            let hearts = document.getElementsByClassName('tries');
-            console.log('inside gameover loss', hearts);
-
-            for (let i = 0; i < hearts.length; i++) {
-                hearts[i].firstChild.src = `images/liveHeart.png`;
-            }
-
-            let keys = document.getElementsByClassName('key');
-            for (let i = 0; i < keys.length; i++) {
-                keys[i].className = `key`;
-                keys[i].disabled = false;
-            }
-
-            document.getElementById('phrase').firstElementChild.remove();
-            document.getElementById('phrase').appendChild(document.createElement('UL'));
-
-        } else {
+        if (this.missed < 5) {
             document.getElementById('game-over-message').innerHTML = "You have won the game.";
             document.getElementById('overlay').className = "win";
             document.getElementById('overlay').style.visibility = "";
-
-            let hearts = document.getElementsByClassName('tries');
-            console.log('inside gameover win', hearts);
-
-            for (let i = 0; i < hearts.length; i++) {
-                hearts[i].firstChild.src = `images/liveHeart.png`;
-            }
-
-            let keys = document.getElementsByClassName('key');
-
-            for (let i = 0; i < keys.length; i++) {
-                keys[i].className = `key`;
-                keys[i].disabled = false;
-            }
-
-            document.getElementById('phrase').firstElementChild.remove();
-            document.getElementById('phrase').appendChild(document.createElement('UL'));
         }
+
+        let hearts = document.getElementsByTagName('img');
+
+        for (let i = 0; i < hearts.length; i++) {
+            hearts[i].src = `images/liveHeart.png`;
+        }
+
+        let keys = document.getElementsByClassName('key');
+
+        for (let i = 0; i < keys.length; i++) {
+            keys[i].className = `key`;
+            keys[i].disabled = false;
+        }
+
+        document.getElementById('phrase').firstElementChild.remove();
+        document.getElementById('phrase').appendChild(document.createElement('UL'));
+
     }
 }
