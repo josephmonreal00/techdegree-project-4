@@ -3,11 +3,7 @@
  * Project 4 - OOP Game App
  * Phrase.js */
 class Phrase {
-    /*
-    The phrase class contructor recieves one param
-    phrase: This is the actual phrase the Phrase object is representing. This property
-    should be set to the `phrase` parameter, but converted to all lower case.
-    */
+
     constructor(phrase) {
         this.phrase = phrase.toLowerCase();
     }
@@ -36,27 +32,19 @@ class Phrase {
         }
     }
 
-    // checks to see if the letter selected matches a letter in the phrase.
-    checkLetter(key, letter, pObj) {
+    checkLetter(key, keyValue) {
         for (let i = 0; i < this.phrase.length; i++) {
-            if (this.phrase[i] == letter) {
-                this.showMatchedLetter(key, letter);
+            if (this.phrase[i] == keyValue) {
+                this.showMatchedLetter(key, keyValue);
             }
-            // else it should call the removeLife() method in the game class (MAYBE)?
         }
     }
 
-    // reveals the letter(s) on the board that matches the player's selection. To reveal
-    // the matching letter(s), select all of the letter DOM elements that have a CSS class name
-    // that matches the selected letter and replace each selected element's `hide` CSS class
-    // with the `show` CSS class.
-    showMatchedLetter(key, letter_) {
-        const phraseEle = document.getElementsByClassName("hide letter");
-        //console.log(letter);
+    showMatchedLetter(key, keyValue) {
+        let phraseEle = document.getElementsByClassName("hide letter");
         for (let i = 0; i < phraseEle.length; i++) {
-            if (phraseEle[i].textContent == letter_) {
+            if (phraseEle[i].textContent == keyValue) {
                 phraseEle[i].className = `show letter ${phraseEle[i].textContent}`;
-                //key.style.backgroundColor = 'yellow';
                 key.className = `key chosen`;
                 key.disabled = true;
             }
