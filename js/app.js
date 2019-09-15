@@ -22,8 +22,9 @@ let keys = document.getElementsByClassName('key');
 window.addEventListener('keydown', e => {
     let theKey;
     for (let i = 0; i < keys.length; i++) {
-        if (keys[i].textContent == e.key) {
+        if (keys[i].textContent == e.key && keys[i].disabled != true) {
             theKey = keys[i];
+            console.log(theKey);
             game.handleInteraction(theKey, e.key);
         }
     }
