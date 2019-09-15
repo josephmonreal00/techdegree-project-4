@@ -16,3 +16,15 @@ qwerty.addEventListener('click', e => {
         game.handleInteraction(e.target, e.target.textContent);
     }
 })
+
+let keys = document.getElementsByClassName('key');
+
+window.addEventListener('keydown', e => {
+    let theKey;
+    for (let i = 0; i < keys.length; i++) {
+        if (keys[i].textContent == e.key) {
+            theKey = keys[i];
+            game.handleInteraction(theKey, e.key);
+        }
+    }
+})
